@@ -3,6 +3,7 @@ package com.epam.customerservice.dto;
 import com.epam.customerservice.models.Gender;
 import com.epam.customerservice.models.IdentityType;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -21,7 +22,7 @@ public class CustomerDto {
 	private String name;
 
 	@Positive
-	@Max(value = 99, message = "Age must be valid")
+	@Max(value = 120, message = "Age must be valid")
 	private Integer age;
 
 	private Gender gender;
@@ -31,7 +32,8 @@ public class CustomerDto {
 	@NotBlank
 	private String identityNumber;
 
-	@NotNull
+	@NotNull(message = "Credentials cannot be null")
+	@Valid
 	private CustomerCredentialDto customerCredentialDto;
 
 }

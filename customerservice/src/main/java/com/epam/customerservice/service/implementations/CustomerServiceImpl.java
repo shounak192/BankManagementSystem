@@ -34,7 +34,8 @@ public class CustomerServiceImpl implements ICustomerService {
 	public Customer register(CustomerDto customerDto) {
 
 		Set<ConstraintViolation<CustomerDto>> customerViolations = customerValidator.validate(customerDto);
-		Set<ConstraintViolation<CustomerCredentialDto>> customerCredentialViolations = customerCredentialValidator.validate(customerDto.getCustomerCredentialDto());
+		Set<ConstraintViolation<CustomerCredentialDto>> customerCredentialViolations = customerCredentialValidator
+				.validate(customerDto.getCustomerCredentialDto());
 		if (!customerViolations.isEmpty() || !customerCredentialViolations.isEmpty())
 			throw new ConstraintViolationException(customerViolations);
 
@@ -57,10 +58,13 @@ public class CustomerServiceImpl implements ICustomerService {
 
 		Customer foundCustomer = customerRepository.findByUsername(customerCredentialDto.getUsername())
 				.orElseThrow(() -> new CustomerNotFoundException("Customer not found"));
-		Example<Customer> exampleCustomer = Example.of(foundCustomer);
+
+		if (foundCustomer.getPassword().equals(customerCredentialDto.getPassword()))
+			return foundCustomer;
+		else
+			throw new InvalidCustomerException("Invalid customer credentials");
 		
-		return customerRepository.findOne(exampleCustomer)
-				.orElseThrow(() -> new InvalidCustomerException("Invalid customer credentials"));
+//		foundCustomer.getPassword().equals(customerCredentialDto.getPassword())?
 	}
 
 	@Override
