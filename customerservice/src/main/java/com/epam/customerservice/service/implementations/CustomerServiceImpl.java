@@ -33,9 +33,10 @@ public class CustomerServiceImpl implements ICustomerService {
 	@Override
 	public Customer register(CustomerDto customerDto) {
 
-		Set<ConstraintViolation<CustomerDto>> violations = customerValidator.validate(customerDto);
-		if (!violations.isEmpty())
-			throw new ConstraintViolationException(violations);
+		Set<ConstraintViolation<CustomerDto>> customerViolations = customerValidator.validate(customerDto);
+		Set<ConstraintViolation<CustomerCredentialDto>> customerCredentialViolations = customerCredentialValidator.validate(customerDto.getCustomerCredentialDto());
+		if (!customerViolations.isEmpty() || !customerCredentialViolations.isEmpty())
+			throw new ConstraintViolationException(customerViolations);
 
 		Optional<Customer> foundCustomer = customerRepository
 				.findByUsername(customerDto.getCustomerCredentialDto().getUsername());

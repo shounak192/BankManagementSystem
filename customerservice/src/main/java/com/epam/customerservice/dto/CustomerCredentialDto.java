@@ -9,11 +9,11 @@ import lombok.Data;
 @AllArgsConstructor
 public class CustomerCredentialDto {
 
-	@NotBlank
+	@NotBlank(message="username cannot be blank")
 	@Pattern(regexp = "^[a-zA-Z0-9]{3,10}$", message = "Username must be alphanumeric of length between 3 and 10")
 	private String username;
 
-	@NotBlank
+	@NotBlank(message="password cannot be blank")
 	private String password;
 
 }

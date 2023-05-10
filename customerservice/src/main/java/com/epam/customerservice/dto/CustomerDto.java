@@ -5,6 +5,9 @@ import com.epam.customerservice.models.IdentityType;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,6 +17,7 @@ import lombok.Data;
 public class CustomerDto {
 
 	@NotBlank
+	
 	private String name;
 
 	@Positive
@@ -22,12 +26,12 @@ public class CustomerDto {
 
 	private Gender gender;
 
-	@NotBlank(message = "Identity Type must be Pan/Aadhar/DL/Passport")
 	private IdentityType identityType;
-
+	
 	@NotBlank
 	private String identityNumber;
 
+	@NotNull
 	private CustomerCredentialDto customerCredentialDto;
 
 }
