@@ -7,8 +7,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @AllArgsConstructor
-public class DuplicateCustomerException extends RuntimeException{
+public class InvalidCustomerException extends RuntimeException{
 	
 	private final String message;
-
 }

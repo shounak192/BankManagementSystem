@@ -7,7 +7,7 @@ import com.epam.customerservice.models.Customer;
 
 @Component
 public class CustomerConvertor {
-
+	
 	public Customer convert(CustomerDto customerDto) {
 
 		return Customer.builder().name(customerDto.getName()).age(customerDto.getAge()).gender(customerDto.getGender())

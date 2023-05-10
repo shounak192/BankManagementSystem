@@ -1,18 +1,24 @@
 package com.epam.customerservice.service.implementations;
 
 import java.util.Optional;
+import java.util.Set;
 
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import com.epam.customerservice.dto.CustomerCredentialDto;
 import com.epam.customerservice.dto.CustomerDto;
 import com.epam.customerservice.exceptions.CustomerNotFoundException;
 import com.epam.customerservice.exceptions.DuplicateCustomerException;
+import com.epam.customerservice.exceptions.InvalidCustomerException;
 import com.epam.customerservice.models.Customer;
 import com.epam.customerservice.repository.ICustomerRepository;
 import com.epam.customerservice.service.ICustomerService;
+import com.epam.customerservice.util.ObjectsValidator;
 import com.epam.customerservice.util.convertor.CustomerConvertor;
 
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import lombok.AllArgsConstructor;
 
 @Service
@@ -21,9 +27,15 @@ public class CustomerServiceImpl implements ICustomerService {
 
 	private ICustomerRepository customerRepository;
 	private CustomerConvertor customerConvertor;
+	private final ObjectsValidator<CustomerDto> customerValidator = new ObjectsValidator<>();
+	private final ObjectsValidator<CustomerCredentialDto> customerCredentialValidator = new ObjectsValidator<>();
 
 	@Override
 	public Customer register(CustomerDto customerDto) {
+
+		Set<ConstraintViolation<CustomerDto>> violations = customerValidator.validate(customerDto);
+		if (!violations.isEmpty())
+			throw new ConstraintViolationException(violations);
 
 		Optional<Customer> foundCustomer = customerRepository
 				.findByUsername(customerDto.getCustomerCredentialDto().getUsername());
@@ -36,8 +48,18 @@ public class CustomerServiceImpl implements ICustomerService {
 
 	@Override
 	public Customer login(CustomerCredentialDto customerCredentialDto) {
-		// TODO Auto-generated method stub
-		return null;
+
+		Set<ConstraintViolation<CustomerCredentialDto>> violations = customerCredentialValidator
+				.validate(customerCredentialDto);
+		if (!violations.isEmpty())
+			throw new ConstraintViolationException(violations);
+
+		Customer foundCustomer = customerRepository.findByUsername(customerCredentialDto.getUsername())
+				.orElseThrow(() -> new CustomerNotFoundException("Customer not found"));
+		Example<Customer> exampleCustomer = Example.of(foundCustomer);
+		
+		return customerRepository.findOne(exampleCustomer)
+				.orElseThrow(() -> new InvalidCustomerException("Invalid customer credentials"));
 	}
 
 	@Override

@@ -11,5 +11,4 @@ import com.epam.customerservice.models.Customer;
 public interface ICustomerRepository extends JpaRepository<Customer, Integer>{
 	
 	Optional<Customer> findByUsername(String username);
-
 }
