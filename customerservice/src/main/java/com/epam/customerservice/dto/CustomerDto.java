@@ -17,8 +17,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class CustomerDto {
 
-	@NotBlank
-	
+	@NotBlank(message="customer name cannot be null")
 	private String name;
 
 	@Positive
@@ -29,7 +28,7 @@ public class CustomerDto {
 
 	private IdentityType identityType;
 	
-	@NotBlank
+	@NotBlank(message="identity number cannot be null")
 	private String identityNumber;
 
 	@NotNull(message = "Credentials cannot be null")

@@ -10,5 +10,7 @@ public interface ICustomerService {
 	
 	public Customer login(CustomerCredentialDto customerCredentialDto);
 	
-	public Customer findByUsername(String username);
+	public Customer findById(Integer id);
+
+	public Customer deleteById(Integer id);
 }

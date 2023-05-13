@@ -8,7 +8,6 @@ public class ModelMapperGenerator {
 
 	private ModelMapperGenerator() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public static ModelMapper getMapper() {

@@ -63,15 +63,20 @@ public class CustomerServiceImpl implements ICustomerService {
 			return foundCustomer;
 		else
 			throw new InvalidCustomerException("Invalid customer credentials");
-		
-//		foundCustomer.getPassword().equals(customerCredentialDto.getPassword())?
 	}
 
 	@Override
-	public Customer findByUsername(String username) {
+	public Customer findById(Integer id) {
 
-		return customerRepository.findByUsername(username)
+		return customerRepository.findById(id).orElseThrow(() -> new CustomerNotFoundException("Customer not found"));
+	}
+
+	@Override
+	public Customer deleteById(Integer id) {
+		Customer foundCustomer = customerRepository.findById(id)
 				.orElseThrow(() -> new CustomerNotFoundException("Customer not found"));
+		customerRepository.deleteById(id);
+		return foundCustomer;
 	}
 
 }
