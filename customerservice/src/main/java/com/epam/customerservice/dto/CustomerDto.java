@@ -23,7 +23,7 @@ public class CustomerDto {
 	@Positive
 	@Max(value = 120, message = "Age must be valid")
 	private Integer age;
-
+	
 	private Gender gender;
 
 	private IdentityType identityType;
