@@ -3,6 +3,7 @@ package com.epam.accountservice.service.implementations;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,15 +15,20 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 import com.epam.accountservice.dto.AccountDto;
 import com.epam.accountservice.dto.AccountViewDto;
 import com.epam.accountservice.dto.Customer;
+import com.epam.accountservice.dto.TransactionDto;
 import com.epam.accountservice.exceptions.AccountNotFoundException;
 import com.epam.accountservice.exceptions.CustomerNotFoundException;
 import com.epam.accountservice.models.Account;
 import com.epam.accountservice.models.Balance;
 import com.epam.accountservice.repository.IAccountRepository;
 import com.epam.accountservice.service.IAccountService;
+import com.epam.accountservice.util.ObjectsValidator;
 import com.epam.accountservice.util.convertor.AccountConvertor;
 import com.epam.accountservice.util.convertor.AccountViewConvertor;
 import com.epam.accountservice.util.convertor.BalanceConvertor;
+
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 
 @Service
 public class AccountServiceImpl implements IAccountService {
@@ -31,6 +37,7 @@ public class AccountServiceImpl implements IAccountService {
 	private AccountConvertor accountConvertor;
 	private AccountViewConvertor accountViewConvertor;
 	private IAccountRepository accountRepository;
+	private final ObjectsValidator<AccountDto> accountValidator = new ObjectsValidator<>();
 
 	@Autowired
 	@Qualifier("getCustomerServiceAppWebClient")
@@ -47,6 +54,10 @@ public class AccountServiceImpl implements IAccountService {
 
 	@Override
 	public AccountViewDto create(Integer customerId, AccountDto accountDto) {
+
+		Set<ConstraintViolation<AccountDto>> violations = accountValidator.validate(accountDto);
+		if (!violations.isEmpty())
+			throw new ConstraintViolationException(violations);
 
 		try {
 			customerServiceAppWebClientBuilder.get().uri("/customer/{customerId}", customerId).retrieve()
