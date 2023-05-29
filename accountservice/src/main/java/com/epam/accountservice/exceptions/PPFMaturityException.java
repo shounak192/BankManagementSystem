@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 
 @ResponseStatus(code = HttpStatus.NOT_FOUND)
 @AllArgsConstructor
-public class InsufficientBalanceException extends RuntimeException {
+public class PPFMaturityException extends RuntimeException {
 
 	private final String message;
 

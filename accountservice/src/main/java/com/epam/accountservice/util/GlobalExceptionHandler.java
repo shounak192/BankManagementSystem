@@ -4,7 +4,6 @@ import java.time.LocalDate;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
@@ -12,6 +11,7 @@ import org.springframework.web.context.request.WebRequest;
 import com.epam.accountservice.exceptions.AccountNotFoundException;
 import com.epam.accountservice.exceptions.CustomerNotFoundException;
 import com.epam.accountservice.exceptions.InsufficientBalanceException;
+import com.epam.accountservice.exceptions.PPFMaturityException;
 
 import jakarta.validation.ConstraintViolationException;
 import lombok.AllArgsConstructor;
@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 public class GlobalExceptionHandler {
 
 	@ExceptionHandler(value = { CustomerNotFoundException.class, AccountNotFoundException.class,
-			InsufficientBalanceException.class, ConstraintViolationException.class })
+			InsufficientBalanceException.class, PPFMaturityException.class, ConstraintViolationException.class })
 	public ResponseEntity<ErrorResponse> handleGlobalException(WebRequest request, Exception e) {
 
 		ErrorResponse response = new ErrorResponse();

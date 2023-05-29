@@ -14,13 +14,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class AccountDto {
 
-	@Positive
-	@Min(value = 0, message = "0:SAVINGS, 1:CURRENT, 2:PPF")
-	@Max(value = 2, message = "0:SAVINGS, 1:CURRENT, 2:PPF")
 	private AccountType accountType;
 
-	@Positive
-	@Min(value = 0, message = "0:SAVINGS, 1:CURRENT, 2:PPF")
-	@Max(value = 2, message = "0:SAVINGS, 1:CURRENT, 2:PPF")
 	private CurrencyUnit unit;
 }

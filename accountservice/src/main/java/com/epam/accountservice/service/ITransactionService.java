@@ -6,5 +6,9 @@ import com.epam.accountservice.dto.TransactionViewDto;
 public interface ITransactionService {
 
 	public TransactionViewDto transaction(TransactionDto transactionDto);
+	
+	
+	
+	
 
 }

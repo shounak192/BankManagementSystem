@@ -18,9 +18,6 @@ public class TransactionDto {
 
 	private Integer accountId;
 
-	@Positive
-	@Min(value = 0, message = "0:DEBIT, 1:CREDIT")
-	@Max(value = 1, message = "0:DEBIT, 1:CREDIT")
 	private TransactionType transactionType;
 
 	private BigDecimal amount;

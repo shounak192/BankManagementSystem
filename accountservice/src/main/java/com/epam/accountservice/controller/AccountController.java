@@ -29,7 +29,7 @@ public class AccountController {
 
 	private IAccountService accountService;
 
-	private AccountController(IAccountService accountService) {
+	public AccountController(IAccountService accountService) {
 		super();
 		this.accountService = accountService;
 	}

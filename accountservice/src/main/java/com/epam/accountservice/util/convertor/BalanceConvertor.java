@@ -10,7 +10,8 @@ import com.epam.accountservice.models.Balance;
 public class BalanceConvertor {
 
 	public Balance convert() {
-		return Balance.builder().openingBalance(new BigDecimal(0.0)).closingBalance(new BigDecimal(0.0)).build();
+		return Balance.builder().openingBalance(BigDecimal.valueOf(0.0)).closingBalance(BigDecimal.valueOf(0.0))
+				.build();
 	}
 
 }
