@@ -3,7 +3,9 @@ package com.epam.accountservice.service.implementations;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -78,12 +80,12 @@ public class TransactionServiceImpl implements ITransactionService {
 		Transaction transaction = transactionConvertor.convert(transactionDto);
 		Integer id = transactionRepository.save(transaction).getId();
 
-		TransactionViewDto transactionViewDto = transactionViewConvertor.convert(balance, transactionDto);
+		TransactionViewDto transactionViewDto = transactionViewConvertor.convert(balance, transaction);
 		transactionViewDto.setId(id);
 		return transactionViewDto;
 	}
 
-	public void checkPPFValidity(Account account, TransactionType transactionType) {
+	private void checkPPFValidity(Account account, TransactionType transactionType) {
 
 		Period period = Period.between(account.getDateCreated(), LocalDate.now());
 
@@ -92,5 +94,14 @@ public class TransactionServiceImpl implements ITransactionService {
 		} else if (transactionType == TransactionType.CREDIT && period.getYears() >= 15) {
 			throw new PPFMaturityException("PPF account matured. No more CREDIT.");
 		}
+	}
+
+	@Override
+	public List<Transaction> generateTransactionHistory(Integer accountId, Integer durationInMonths) {
+
+		return transactionRepository
+				.findAllByAccountId(accountId).stream().filter(transaction -> Period
+						.between(transaction.getTransactionDate(), LocalDate.now()).getMonths() <= durationInMonths)
+				.toList();
 	}
 }

@@ -1,6 +1,7 @@
 package com.epam.accountservice.dto;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 import com.epam.accountservice.models.TransactionType;
 
@@ -24,5 +25,7 @@ public class TransactionViewDto {
 	private BigDecimal amount;
 
 	private BigDecimal closingBalance;
+	
+	private LocalDate transactionDate;
 
 }

@@ -1,6 +1,7 @@
 package com.epam.accountservice.models;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -30,5 +31,7 @@ public class Transaction {
 	private Integer accountId;
 
 	private BigDecimal amount;
+	
+	private LocalDate transactionDate;
 
 }
