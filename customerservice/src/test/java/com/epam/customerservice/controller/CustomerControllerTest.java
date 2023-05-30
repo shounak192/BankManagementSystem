@@ -27,20 +27,20 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @SpringBootTest
 @AutoConfigureMockMvc
 public class CustomerControllerTest {
-	
+
 	private MockMvc mockMvc;
-	
+
 	private ObjectMapper objectMapper;
-	
+
 	@MockBean
 	private CustomerServiceImpl customerService;
-	
+
 	private CustomerDto customerDto;
-	
+
 	private CustomerCredentialDto customerCredentialDto;
-	
+
 	private Customer customer;
-	
+
 	@Autowired
 	private CustomerControllerTest(MockMvc mockMvc, ObjectMapper objectMapper) {
 		super();
@@ -48,42 +48,41 @@ public class CustomerControllerTest {
 		this.objectMapper = objectMapper;
 	}
 
-
 	@BeforeEach
 	void setup() {
-		customerCredentialDto= new CustomerCredentialDto("username", "password");
-		customerDto= new CustomerDto("name", 10, Gender.MALE, IdentityType.PAN, "IDT123", customerCredentialDto);
-		customer= new Customer(1, "name", 10, Gender.MALE, IdentityType.PAN, "IDT123", "username", "password");
+		customerCredentialDto = new CustomerCredentialDto("username", "password");
+		customerDto = new CustomerDto("name", 10, Gender.MALE, IdentityType.PAN, "IDT123", customerCredentialDto);
+		customer = new Customer(1, "name", 10, Gender.MALE, IdentityType.PAN, "IDT123", "username", "password");
 	}
-	
+
 	@Test
 	void registerTest() throws JsonProcessingException, Exception {
-		
+
 		when(customerService.register(customerDto)).thenReturn(customer);
 		mockMvc.perform(post("/customer/register").contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(customerDto))).andExpect(status().isCreated());
 	}
-	
+
 	@Test
-	void loginTest() throws JsonProcessingException, Exception  {
-		
+	void loginTest() throws JsonProcessingException, Exception {
+
 		when(customerService.login(customerCredentialDto)).thenReturn(customer);
 		mockMvc.perform(get("/customer/login").contentType(MediaType.APPLICATION_JSON)
 				.content(objectMapper.writeValueAsString(customerDto))).andExpect(status().isOk());
 	}
-	
+
 	@Test
 	void findByIdTest() throws Exception {
-		
+
 		when(customerService.findById(1)).thenReturn(customer);
-		mockMvc.perform(get("/customer/{id}",1)).andExpect(status().isFound());
+		mockMvc.perform(get("/customer/{id}", 1)).andExpect(status().isFound());
 	}
-	
+
 	@Test
 	void deleteByIdTest() throws Exception {
-		
+
 		when(customerService.register(customerDto)).thenReturn(customer);
-		mockMvc.perform(delete("/customer/{id}",1)).andExpect(status().isOk());
+		mockMvc.perform(delete("/customer/{id}", 1)).andExpect(status().isOk());
 	}
 
 }
