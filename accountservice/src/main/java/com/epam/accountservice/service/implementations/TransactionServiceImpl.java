@@ -91,7 +91,7 @@ public class TransactionServiceImpl implements ITransactionService {
 
 		if (transactionType == TransactionType.DEBIT && period.getYears() < 15) {
 			throw new PPFMaturityException("PPF Account not yet matured. No DEBIT.");
-		} else if (transactionType == TransactionType.CREDIT && period.getYears() >= 15) {
+		} else if (transactionType == TransactionType.CREDIT && period.getYears() > 15) {
 			throw new PPFMaturityException("PPF account matured. No more CREDIT.");
 		}
 	}
